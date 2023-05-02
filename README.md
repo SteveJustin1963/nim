@@ -60,23 +60,62 @@ function get_player_move(player, pieces):
 
 ## c code 
 ```
-#include <stdio.h> 
-#include <stdlib.h> 
+#include <stdio.h>
 
-int main() 
-{ 
-    int n,m,i,j,k; 
-    printf("Enter the value of n and m\n"); 
-    scanf("%d %d", &n, &m); 
-    if (n%2 == 0) 
-    { 
-        printf("Player 1 wins\n"); 
-        return 0; 
-    } 
-    else
-    { 
-        printf("Player 2 wins\n"); 
-        return 0; 
-    } 
+// define a function to get the player's move
+int get_player_move(int player, int pieces) {
+    int move;
+    // loop until a valid move is entered
+    do {
+        // prompt the player to enter their move
+        printf("Player %d, enter your move (1-3): ", player);
+        scanf("%d", &move);
+
+        // validate the move
+        if (move < 1 || move > 3) {
+            printf("Invalid move. Please enter a number between 1 and 3.\n");
+        } else if (move > pieces) {
+            printf("Invalid move. You cannot remove more pieces than are in the pile.\n");
+        } else {
+            // the move is valid, return it
+            return move;
+        }
+    } while (1);
 }
+
+int main() {
+    int pieces = 21;
+    int current_player = 1;
+    int move;
+
+    // loop until the game is over
+    while (pieces > 0) {
+        // display the current state of the game
+        printf("There are %d pieces remaining in the pile.\n", pieces);
+
+        // get the player's move
+        move = get_player_move(current_player, pieces);
+
+        // update the number of pieces in the pile
+        pieces -= move;
+
+        // switch to the other player
+        if (current_player == 1) {
+            current_player = 2;
+        } else {
+            current_player = 1;
+        }
+    }
+
+    // display the winner
+    if (current_player == 1) {
+        printf("Player 2 wins!\n");
+    } else {
+        printf("Player 1 wins!\n");
+    }
+
+    return 0;
+}
+
 ```
+Note that the implementation is slightly different from the pseudocode due to the use of a do-while loop instead of a while loop, and some changes in the syntax for printing and scanning inputs.
